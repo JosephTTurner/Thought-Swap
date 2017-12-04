@@ -152,10 +152,20 @@
         });
 
         $scope.changedAgree = function (v) { 
-            ThoughtSocket.emit('agree', $scope.distributedThought)
+            // ThoughtSocket.emit('agree', $scope.distributedThought)
         }   
         $scope.changedDisagree = function (v) { 
-            ThoughtSocket.emit('disagree', $scope.distributedThought)
+            // ThoughtSocket.emit('disagree', $scope.distributedThought)
+        }
+
+        $scope.submitAgreeDisagree = function (v) {
+            if (document.querySelector('input[name="inlineRadioOptions"]:checked').value){
+                ThoughtSocket.emit('agree', $scope.distributedThought)
+            } 
+            else// if (document.querySelector('input[name="inlineRadio2"]:checked').value)
+            {
+                ThoughtSocket.emit('disagree', $scope.distributedThought)
+            }
         }   
 
     }

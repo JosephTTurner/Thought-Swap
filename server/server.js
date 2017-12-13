@@ -108,6 +108,24 @@ function bulkCreateParticipants(num, groupId) {
     });
 }
 
+function bulkCreateDemoParticipants(num, groupId) {
+  var createResults = [];
+  // console.log("bulkCreateParticipants args: ", num, groupId)
+  var sillyname = makeName();
+
+  for (var i = 0; i < num; i++) {
+    createResults.push(createDemoParticpant(groupId, sillyname, i));
+  }
+
+  return Promise.all(createResults)
+    .then(function (results) {
+      return findGroupById(groupId);
+    })
+    .catch(function (err) {
+      console.error('Err in bulk results: ', err);
+    });
+}
+
 /**
  *
  */
@@ -404,6 +422,19 @@ function createParticpant(g) {
   });
 }
 
+function createDemoParticpant(g, name, i) {
+  // console.log('createParticpant', g)
+  var sillyname = name + i;
+  console.log('Creating participant with sillyname: ', sillyname);
+  return models.User.create({
+    email: null,
+    username: sillyname,
+    password: null,
+    role: 'participant',
+    groupId: g
+  });
+}
+
 function createSocket(info) {
   // console.log('createSocket', info)
   return models.Socket.create({
@@ -620,14 +651,27 @@ app.post('/groups/create', function (request, response) {
         request.body.group.owner)
       .then(function (group) {
         // TODO: Log this in the events table
-        bulkCreateParticipants(request.body.group.numParticipants,
-            group.get('id'))
-          .then(function (group) {
-            // console.log("Group Created: ", group)
-            response.status(200).json({
-              group: group
+        var demo = new RegExp('.*demo.*','i');
+        if(demo.test(group.name)){
+          bulkCreateDemoParticipants(request.body.group.numParticipants,
+              group.get('id'))
+            .then(function (group) {
+              // console.log("Group Created: ", group)
+              response.status(200).json({
+                group: group
+              });
             });
-          });
+        }
+        else{
+          bulkCreateParticipants(request.body.group.numParticipants,
+              group.get('id'))
+            .then(function (group) {
+              // console.log("Group Created: ", group)
+              response.status(200).json({
+                group: group
+              });
+            });
+        }
       })
       .catch(function (err) {
         console.error('>> Error in create group: ', err);
@@ -635,6 +679,7 @@ app.post('/groups/create', function (request, response) {
       });
   }
 });
+
 
 // app.delete('/groups/delete', function(request, response) {
 //		//TODO: Implement ability to delete groups

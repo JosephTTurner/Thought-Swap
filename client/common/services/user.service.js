@@ -51,6 +51,57 @@
 			return deferred.promise;
 		};
 
+		// this.loginDemo = function (options) {
+		// 	var deferred = $q.defer();
+
+		// 	// probably won't matter
+		// 	if (options.facilitator) {
+		// 		$http.post('/signin', {
+		// 				user: {
+		// 					username: options.username,
+		// 					password: options.password
+		// 				}
+		// 			})
+		// 			.success(function (data) {
+		// 				this.auth(data, deferred);
+		// 			}.bind(this))
+
+		// 			.error(function (data, status) {
+		// 				deferred.reject(data);
+		// 			});
+		// 	} else {
+		// 		var i = 0;
+		// 		// capping at 100 for now. not ideal.
+		// 		while (i < 100){
+		// 			var iString = ""+i;
+
+		// 			var name = options.username + i;
+
+		// 			var rejected = false;
+
+		// 			$http.post('/signin', {
+		// 					user: {
+		// 						username: name
+		// 					}
+		// 				})
+		// 				.success(function (data) {
+		// 					this.auth(data, deferred);
+		// 					// success = true;
+		// 				}.bind(this))
+
+		// 				.error(function (data, status) {
+		// 					deferred.reject(data);
+		// 				});
+
+		// 			console.log(deferred.promise);
+
+		// 			i++;
+		// 		}
+		// 	}
+
+		// 	return deferred.promise;
+		// };
+
 		this.isLoggedIn = function () {
 			var isLoggedIn = this.hasOwnProperty('user') && this.user !== null;
 
@@ -65,6 +116,10 @@
 
 		this.isFacilitator = function () {
 			return this.isLoggedIn() && this.user && this.user.role === 'facilitator';
+		};
+
+		this.isParticipant = function () {
+			return this.isLoggedIn() && this.user && this.user.role === 'participant';
 		};
 
 		this.isParticipant = function () {

@@ -54,6 +54,27 @@
 			return deferred.promise;
 		};
 
+		this.createDemoGroup = function (options) {
+			var deferred = $q.defer();
+
+			$http.post('/groups/createDemo', {
+					group: {
+						name: options.groupname,
+						owner: options.ownerId,
+						numParticipants: options.numParticipants
+					}
+				})
+				.success(function (data) {
+					deferred.resolve(data);
+				})
+
+				.error(function (data, status) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
 
 	}
 

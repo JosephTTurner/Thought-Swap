@@ -1,11 +1,20 @@
 <ts-header></ts-header>
 <section>
     <div class="container groups">
+        
         <br>
         <h2>Discussion Groups</h2>
         <button ng-click="createGroup()" class="pull-right btn sml yellow" id="createBtn">
                 New Group
-        </button> <br>
+        </button> 
+
+        <div>
+        <button ng-click="createDemoGroup()" class="pull-right btn sml yellow" id="createDemoBtn">
+                Demo Group
+        </button>
+        </div>
+        <br>
+
         <div class="text-center">
             <img class="loadIcon" ng-if="dataLoading && groups === null" src="assets/img/loading.gif" />
         </div> <br>

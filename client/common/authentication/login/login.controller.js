@@ -16,11 +16,17 @@
         'facilitatorLogin', 'LoggerService'
     ];
 
+    
+
     function LoginController($scope, $location, $http, UserService,
         facilitatorLogin, Logger) {
 
+        var demo = false;
+
         (function initController() {
             // reset login status?
+
+            demo = false;
 
             $scope.isFacilitator = facilitatorLogin;
 
@@ -30,29 +36,70 @@
             console.log("user:", UserService.user);
         })();
 
+        $scope.demoToggle = function() {
+            demo = !demo;
+        }
+
+        $scope.isDemo = function(){return demo;}
+
         $scope.loginParticipant = function () {
             $scope.dataLoading = true;
-            UserService.login({
-                    username: $scope.sillyname,
-                    facilitator: $scope.isFacilitator
-                })
-                .then(function (user) {
-                    $location.path('/participant');
-                    Logger.createEvent({
-                        data: $scope.sillyname + ' successfully logged in',
-                        type: 'logIn'
-                    });
-                })
-                .catch(function (err) {
-                    $scope.error = err;
-                    $scope.dataLoading = false;
-                    Logger.createEvent({
-                        data: 'participant' + $scope.sillyname +
-                            'encountered error ' + err + ' while logging in',
-                        type: 'authenticateError'
-                    });
+            if (demo === false){
+                UserService.login({
+                        username: $scope.sillyname,
+                        facilitator: $scope.isFacilitator
+                    })
+                    .then(function (user) {
+                        $location.path('/participant');
+                        Logger.createEvent({
+                            data: $scope.sillyname + ' successfully logged in',
+                            type: 'logIn'
+                        });
+                    })
+                    .catch(function (err) {
+                        $scope.error = err;
+                        $scope.dataLoading = false;
+                        Logger.createEvent({
+                            data: 'participant' + $scope.sillyname +
+                                'encountered error ' + err + ' while logging in',
+                            type: 'authenticateError'
+                        });
 
-                });
+                    });
+            }
+            else{
+
+                var name = "";
+
+                for(var i = 0; i < 100; i++){
+
+                    name = $scope.sillyname + i;
+
+                    console.log(name);
+
+                    UserService.login({
+                            username: $scope.sillyname,
+                            facilitator: $scope.isFacilitator
+                        })
+                        .then(function (user) {
+                            $location.path('/participant');
+                            Logger.createEvent({
+                                data: $scope.sillyname + ' successfully logged in',
+                                type: 'logIn'
+                            });
+                        })
+                        .catch(function (err) {
+                            $scope.error = err;
+                            $scope.dataLoading = false;
+                            Logger.createEvent({
+                                data: 'participant' + $scope.sillyname +
+                                    'encountered error ' + err + ' while logging in',
+                                type: 'authenticateError'
+                            });
+
+                        });
+                }
+            }
         };
 
         $scope.loginFacilitator = function () {

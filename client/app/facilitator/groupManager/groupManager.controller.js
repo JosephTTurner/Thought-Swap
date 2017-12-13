@@ -48,6 +48,23 @@
             });
         };
 
+        $scope.createDemoGroup = function () {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'app/facilitator/partials/newGroupModal.html',
+                controller: 'DemoGroupModalController',
+                resolve: {
+                    groups: function () {
+                        return $scope.groups;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (group) {
+                $scope.groups.push(group);
+            });
+        };
+
         $scope.logOut = function () {
             $scope.dataLoading = true;
             UserService.logout()
@@ -108,6 +125,25 @@
 
         $scope.submit = function () {
             GroupsService.createGroup({
+                    groupname: $scope.groupname,
+                    ownerId: UserService.user.id,
+                    numParticipants: $scope.numParticipants
+                })
+                .then(function (results) {
+                    $modalInstance.close(results.group);
+                });
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    }
+
+    function DemoGroupModalController($scope, $modalInstance, groups, GroupsService, UserService) {
+        $scope.groups = groups;
+
+        $scope.submit = function () {
+            GroupsService.createDemoGroup({
                     groupname: $scope.groupname,
                     ownerId: UserService.user.id,
                     numParticipants: $scope.numParticipants

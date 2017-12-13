@@ -14,76 +14,68 @@
         <form name="form" ng-submit="submitThought()" role="form" ng-show="!viewingDistribution">
             <!-- Rich Text Editor, hidden input ensures it is part of form -->
             <div focus-contenteditable text-angular ng-model="htmlThought" name="thoughtForm" id="thoughtForm" ta-focussed-class="focussed"
-            ta-toolbar=" [['p'],
-            ['bold','italics','underline','ul','ol'],
-            ['insertImage','insertLink']]">
-            <!-- 'pre' (code) functionality in first block? -->
-        </div>
-        <input type="hidden" name="thoughtForm" id="thoughtForm" ng-model="htmlThought" required />
-        <div class="form-actions">
-            <button type="submit" ng-disabled="form.$invalid" class="btn sml blue submit">Submit</button>
-        </div>
-    </form>
-    <div class="container" id="distributed-thought" ng-if="viewingDistribution">
-        <div class="panel-primary">
-            <div class="panel-heading">
-                <h5 class="panel-title">Received Thought</h5>
+                ta-toolbar=" [['p'],
+                        ['bold','italics','underline','ul','ol'],
+                        ['insertImage','insertLink']]">
+                <!-- 'pre' (code) functionality in first block? -->
             </div>
-            <div class="panel-body" ng-bind-html="distributedThought.content"></div>
-            <div class="panel-footer">
-                <form class="form-inline">
-                    <div class="form-group">
-                        I 
-                        <label class="radio-inline">
-                            <input type="radio" ng-model="doesAgree" ng-change="changedAgree()" name="inlineRadioOptions" id="inlineRadio1" ng-value="true"> 
-                            agree
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" ng-model="doesAgree" ng-change="changedDisagree()" name="inlineRadioOptions" id="inlineRadio2" ng-value="false"> 
-                            disagree
-                        </label> 
-                        with this thought.
-                    </div>
-                    <button id="submit-agree" type="button" ng-click="submitAgreeDisagree()" class="btn sml blue" value="submit-agree">
-                        Submit
-                    </button>
-                </form>
-            
-                <div class="btn-group pull-right" uib-dropdown is-open="status.isopen">        
-                    <button id="single-button" type="button" class="btn sml blue" uib-dropdown-toggle ng-disabled="disabled">
-                        Group Color <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu ts-group-color-selection-item" 
-                    uib-dropdown-menu role="menu">
-                    <li role="menuitem" ng-repeat="item in possibleGroups track by item.id" ng-click="selectGroupColor(item)">
-                        <div class="ts-swatch" ng-style="styleFor(item)"></div>{{item.name}}
-                    </li>
-                </ul>
+            <input type="hidden" name="thoughtForm" id="thoughtForm" ng-model="htmlThought" required />
+            <div class="form-actions">
+                <button type="submit" ng-disabled="form.$invalid" class="btn sml blue submit">Submit</button>
             </div>
-        </div>
-    </div>
-</div>
-</div>
-<div class="col-md-4">
-    <div class="panel panel-default" id="history">
-        <div class="panel-body">
-            <uib-accordion>
-                <div uib-accordion-group is-open="status.historyIsOpen">
-                    <uib-accordion-heading>
-                        <div ng-click="toggleHistory">
-                            <span>Previous Thoughts</span>
-                            <i class="fa fa-plus text-muted pull-right" title="Expand"></i>
-                        </div>
-                    </uib-accordion-heading>
-                    <ul ng-model="htmlThoughts" id="thoughtHistory">
-                        <li ng-repeat="thought in htmlThoughts" class="thoughtItem">
-                            <div ng-bind-html="thought.thought"></div>
-                            <!-- TODO: add '| htmlTrusted' for filter -->
-                        </li>
-                    </ul>
+        </form>
+        <div class="container" id="distributed-thought" ng-if="viewingDistribution">
+            <div class="panel-primary">
+                <div class="panel-heading">
+                    <h5 class="panel-title">Received Thought</h5>
                 </div>
-            </uib-accordion>
+                <div class="panel-body" ng-bind-html="distributedThought.content"></div>
+                <div class="panel-footer">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            I <label class="radio-inline">
+                                <input type="radio" ng-model="doesAgree" ng-change="changedAgree()" name="inlineRadioOptions" id="inlineRadio1" ng-value="true"> agree
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" ng-model="doesAgree" ng-change="changedDisagree()" name="inlineRadioOptions" id="inlineRadio2" ng-value="false"> disagree
+                            </label> with this thought.
+                        </div>
+                    </form>
+                    <div class="btn-group pull-right" uib-dropdown is-open="status.isopen">
+                        <button id="single-button" type="button" class="btn sml blue" uib-dropdown-toggle ng-disabled="disabled">
+                            Group Color <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu ts-group-color-selection-item" 
+                            uib-dropdown-menu role="menu">
+                            <li role="menuitem" ng-repeat="item in possibleGroups track by item.id" ng-click="selectGroupColor(item)">
+                                <div class="ts-swatch" ng-style="styleFor(item)"></div>{{item.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    <div class="col-md-4">
+        <div class="panel panel-default" id="history">
+            <div class="panel-body">
+                <uib-accordion>
+                    <div uib-accordion-group is-open="status.historyIsOpen">
+                        <uib-accordion-heading>
+                            <div ng-click="toggleHistory">
+                                <span>Previous Thoughts</span>
+                                <i class="fa fa-plus text-muted pull-right" title="Expand"></i>
+                            </div>
+                        </uib-accordion-heading>
+                        <ul ng-model="htmlThoughts" id="thoughtHistory">
+                            <li ng-repeat="thought in htmlThoughts" class="thoughtItem">
+                                <div ng-bind-html="thought.thought"></div>
+                                <!-- TODO: add '| htmlTrusted' for filter -->
+                            </li>
+                        </ul>
+                    </div>
+                </uib-accordion>
+            </div>
+        </div>
+    </div>
 </div>
